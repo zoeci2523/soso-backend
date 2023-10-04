@@ -1,6 +1,7 @@
 package cn.zoeci.sosobackend.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import cn.zoeci.sosobackend.model.dto.user.UserQueryRequest;
 import cn.zoeci.sosobackend.model.entity.User;
@@ -118,4 +119,5 @@ public interface UserService extends IService<User> {
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
 
+    Page<UserVO> listUserVOByPage(UserQueryRequest userQueryRequest);
 }

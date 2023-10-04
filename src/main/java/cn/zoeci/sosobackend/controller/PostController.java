@@ -1,7 +1,5 @@
 package cn.zoeci.sosobackend.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.gson.Gson;
 import cn.zoeci.sosobackend.annotation.AuthCheck;
 import cn.zoeci.sosobackend.common.BaseResponse;
 import cn.zoeci.sosobackend.common.DeleteRequest;
@@ -19,22 +17,19 @@ import cn.zoeci.sosobackend.model.entity.User;
 import cn.zoeci.sosobackend.model.vo.PostVO;
 import cn.zoeci.sosobackend.service.PostService;
 import cn.zoeci.sosobackend.service.UserService;
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 帖子接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @RestController
 @RequestMapping("/post")
@@ -165,9 +160,8 @@ public class PostController {
         long size = postQueryRequest.getPageSize();
         // 限制爬虫
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
-        Page<Post> postPage = postService.page(new Page<>(current, size),
-                postService.getQueryWrapper(postQueryRequest));
-        return ResultUtils.success(postService.getPostVOPage(postPage, request));
+        Page<PostVO> postPage = postService.listPostVOByPage(postQueryRequest, request);
+        return ResultUtils.success(postPage);
     }
 
     /**
