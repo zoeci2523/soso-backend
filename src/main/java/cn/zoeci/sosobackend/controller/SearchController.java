@@ -4,6 +4,7 @@ import cn.zoeci.sosobackend.common.BaseResponse;
 import cn.zoeci.sosobackend.common.ErrorCode;
 import cn.zoeci.sosobackend.common.ResultUtils;
 import cn.zoeci.sosobackend.exception.BusinessException;
+import cn.zoeci.sosobackend.manager.SearchFacade;
 import cn.zoeci.sosobackend.model.dto.post.PostQueryRequest;
 import cn.zoeci.sosobackend.model.dto.search.SearchRequest;
 import cn.zoeci.sosobackend.model.dto.user.UserQueryRequest;
@@ -43,26 +44,34 @@ public class SearchController {
     @Resource
     private PictureService pictureService;
 
+    @Resource
+    private SearchFacade searchFacade;
+
     @PostMapping("/all")
     public BaseResponse<SearchVO> searchAll(@RequestBody SearchRequest searchRequest, HttpServletRequest request){
-        String searchText = searchRequest.getSearchText();
-        Page<Picture> picturePage = pictureService.searchPicture(searchText, 1, 10);
+            return ResultUtils.success(searchFacade.searchAll(searchRequest, request));
 
-        UserQueryRequest userQueryRequest = new UserQueryRequest();
-        userQueryRequest.setUserName(searchText);
-        Page<UserVO> userPage = userService.listUserVOByPage(userQueryRequest);
-
-        PostQueryRequest postQueryRequest = new PostQueryRequest();
-        postQueryRequest.setSearchText(searchText);
-        Page<PostVO> postPage = postService.listPostVOByPage(postQueryRequest, request);
-
-        SearchVO searchVO = new SearchVO();
-        searchVO.setUserVOList(userPage.getRecords());
-        searchVO.setPostVOList(postPage.getRecords());
-        searchVO.setPictureList(picturePage.getRecords());
-
-        return ResultUtils.success(searchVO);
     }
+
+//    public BaseResponse<SearchVO> searchAll(@RequestBody SearchRequest searchRequest, HttpServletRequest request){
+//        String searchText = searchRequest.getSearchText();
+//        Page<Picture> picturePage = pictureService.searchPicture(searchText, 1, 10);
+//
+//        UserQueryRequest userQueryRequest = new UserQueryRequest();
+//        userQueryRequest.setUserName(searchText);
+//        Page<UserVO> userPage = userService.listUserVOByPage(userQueryRequest);
+//
+//        PostQueryRequest postQueryRequest = new PostQueryRequest();
+//        postQueryRequest.setSearchText(searchText);
+//        Page<PostVO> postPage = postService.listPostVOByPage(postQueryRequest, request);
+//
+//        SearchVO searchVO = new SearchVO();
+//        searchVO.setUserVOList(userPage.getRecords());
+//        searchVO.setPostVOList(postPage.getRecords());
+//        searchVO.setPictureList(picturePage.getRecords());
+//
+//        return ResultUtils.success(searchVO);
+//    }
 
     // 并发访问不同类型
     @PostMapping("/allAsync")

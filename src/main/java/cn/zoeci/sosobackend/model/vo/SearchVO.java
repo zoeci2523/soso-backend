@@ -1,6 +1,7 @@
 package cn.zoeci.sosobackend.model.vo;
 
 import cn.zoeci.sosobackend.model.entity.Picture;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,4 +20,6 @@ public class SearchVO implements Serializable {
     private List<PostVO> postVOList;
 
     private List<Picture> pictureList;
+
+    private Page dataList;
 }
