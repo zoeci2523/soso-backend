@@ -1,6 +1,7 @@
 package cn.zoeci.sosobackend.dataSource;
 
 import cn.zoeci.sosobackend.model.dto.post.PostQueryRequest;
+import cn.zoeci.sosobackend.model.entity.Post;
 import cn.zoeci.sosobackend.model.vo.PostVO;
 import cn.zoeci.sosobackend.service.PostService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,8 +34,9 @@ public class PostDataSource implements DataSource<PostVO> {
         postQueryRequest.setCurrent(pageNum);
         postQueryRequest.setPageSize(pageSize);
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
-        Page<PostVO> postPage = postService.listPostVOByPage(postQueryRequest, request);
-        return postPage;
+        //Page<PostVO> postPage = postService.listPostVOByPage(postQueryRequest, request);
+        Page<Post> postPage = postService.searchFromEs(postQueryRequest);
+        return postService.getPostVOPage(postPage, request);
     }
 }
 
