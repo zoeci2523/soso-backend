@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class PostDataSource implements DataSource<PostVO> {
 
-    private final static Gson GSON = new Gson();
 
     @Resource
     private PostService postService;
